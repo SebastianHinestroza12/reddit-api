@@ -8,4 +8,4 @@ router.get('/', subredditController.listSubreddits);
 router.post('/', subredditController.createSubreddit);
 router.get('/:subredditId', subredditController.getSubredditById);
 
-export { router}
+export { router };

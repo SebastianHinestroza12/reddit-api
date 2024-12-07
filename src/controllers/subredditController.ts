@@ -25,6 +25,6 @@ export class SubredditController {
    * @param res - Express response object.
    */
   public async getSubredditById(req: Request, res: Response): Promise<void> {
-    // TODO: Logic 
+    // TODO: Logic
   }
 }
