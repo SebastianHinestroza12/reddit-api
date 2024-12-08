@@ -1,6 +1,7 @@
 import { sequelize } from '@/database';
 import { DataTypes } from 'sequelize';
 import { SubredditInstance } from '@/interfaces/subreddits';
+import { getCurrentUnixTimestamp } from '@/utils';
 
 export const Subreddit = sequelize.define<SubredditInstance>(
   'subreddit',
@@ -28,7 +29,7 @@ export const Subreddit = sequelize.define<SubredditInstance>(
     active_user_count: { type: DataTypes.INTEGER, allowNull: true },
     submit_text: { type: DataTypes.TEXT, allowNull: true },
     submit_text_html: { type: DataTypes.TEXT, allowNull: true },
-    created_utc: { type: DataTypes.DATE, allowNull: false },
+    created_utc: { type: DataTypes.INTEGER, defaultValue: getCurrentUnixTimestamp },
   },
   { tableName: 'subreddits', timestamps: false },
 );
