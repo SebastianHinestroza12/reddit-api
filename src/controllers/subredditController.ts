@@ -1,9 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { RedditService } from '@/services/reddit.service';
-import { formatResponse } from '@/utils/jsonApiFormatter';
 import { StatusCodes } from 'http-status-codes';
-import { JsonApiResponse } from '@/interfaces/jsonApi';
-import { SubredditMetadataAttributes } from '@/interfaces/subreddits-metadata';
 
 export class SubredditController {
   /**
@@ -14,29 +11,7 @@ export class SubredditController {
   public async listSubreddits(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const subReddits = await RedditService.getAllSubreddit();
-
-      const getRelationships = (subreddit: any) => {
-        const metadata = subreddit.subreddit_metadata[0];
-        if (metadata) {
-          return {
-            metadata: {
-              data: {
-                type: 'subreddit_metadata',
-                id: metadata.id.toString(),
-              },
-            },
-          };
-        }
-        return undefined;
-      };
-
-      const formattedResponse: JsonApiResponse = formatResponse(
-        'subreddit',
-        subReddits,
-        getRelationships,
-      );
-
-      res.status(StatusCodes.OK).json(formattedResponse);
+      res.status(StatusCodes.OK).json(subReddits);
     } catch (error) {
       next(error);
     }
@@ -51,7 +26,12 @@ export class SubredditController {
     try {
       await RedditService.createSubreddit();
       res.status(StatusCodes.CREATED).json({
-        subreddits: 'Created successfully',
+        data: {
+          type: 'subreddit',
+        },
+        meta: {
+          message: 'Subreddits created successfully',
+        },
       });
     } catch (error) {
       next(error);
@@ -67,10 +47,7 @@ export class SubredditController {
     try {
       const { subredditId } = req.params;
       const subreddit = await RedditService.getSubredditById(subredditId);
-
-      res.status(StatusCodes.OK).json({
-        data: subreddit,
-      });
+      res.status(StatusCodes.OK).json(subreddit);
     } catch (error) {
       next(error);
     }

@@ -3,10 +3,11 @@ import { sequelize } from '@/database';
 import { Subreddit } from '@/models/Subreddit';
 import { SubredditMetadata } from '@/models/SubredditMetadata';
 import { apiClient } from '@/utils';
-import { ApiResponse, ChildItem, SubredditAttributes } from '@/interfaces/subreddits';
-import { SubredditMetadataAttributes } from '@/interfaces/subreddits-metadata';
+import { ApiResponse, ChildItem } from '@/interfaces/subreddits';
 import { StatusCodes } from 'http-status-codes';
 import { CustomHttpError } from '@/interfaces/customHttpError';
+import { JsonApiDataIProps, JsonApiResponse } from '@/interfaces/jsonApi';
+import { formatResponse } from '@/utils/jsonApiFormatter';
 
 class RedditService {
   static async fetchDataReddits(): Promise<ChildItem[]> {
@@ -91,34 +92,51 @@ class RedditService {
       await transaction.commit();
     } catch (error) {
       await transaction.rollback();
-      throw new Error('No se pudieron crear los subreddits.');
+      throw new Error('Subreddits could not be created.');
     }
   }
 
-  static async getAllSubreddit() {
-    const subReddit = Subreddit.findAll({
-      include: [{ model: SubredditMetadata }],
-    });
-    return subReddit;
+  static async getAllSubreddit(): Promise<JsonApiResponse> {
+    try {
+      const subReddits = await Subreddit.findAll({
+        include: [{ model: SubredditMetadata }],
+      });
+
+      const flattenData = subReddits.map((subreddit) => subreddit.toJSON());
+      const formattedResponse: JsonApiResponse = formatResponse(
+        'subreddit',
+        flattenData as unknown as JsonApiDataIProps[],
+      );
+
+      return formattedResponse;
+    } catch (error) {
+      throw createError(StatusCodes.INTERNAL_SERVER_ERROR, 'Error getting subreddits.');
+    }
   }
 
-  static async getSubredditById(
-    subredditId: string,
-  ): Promise<(SubredditAttributes & { metadata: SubredditMetadataAttributes }) | null> {
-    const subreddit = await Subreddit.findOne({
-      where: { id: subredditId },
-      include: [{ model: SubredditMetadata }],
-    });
+  static async getSubredditById(subredditId: string): Promise<JsonApiResponse> {
+    try {
+      const subreddit = await Subreddit.findOne({
+        where: { id: subredditId },
+        include: [{ model: SubredditMetadata }],
+      });
 
-    if (!subreddit) {
-      const error: CustomHttpError = createError(StatusCodes.NOT_FOUND, 'Subreddit not found');
-      error.type = 'resource_not_found';
+      if (!subreddit) {
+        const error: CustomHttpError = createError(StatusCodes.NOT_FOUND, 'Subreddit not found');
+        error.type = 'resource_not_found';
+        throw error;
+      }
+
+      const flattenData = subreddit.toJSON();
+      const formattedResponse: JsonApiResponse = formatResponse(
+        'subreddit',
+        flattenData as unknown as JsonApiDataIProps[],
+      );
+
+      return formattedResponse;
+    } catch (error) {
       throw error;
     }
-
-    return subreddit
-      ? { ...subreddit.get(), metadata: subreddit.get('metadata') as SubredditMetadataAttributes }
-      : null;
   }
 }
 

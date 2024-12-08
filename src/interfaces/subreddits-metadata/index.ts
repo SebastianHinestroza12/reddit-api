@@ -1,7 +1,7 @@
 import { Model } from 'sequelize';
 
 export interface SubredditMetadataAttributes {
-  id: number;
+  id?: number | string;
   subreddit_id: string;
   restrict_posting: boolean;
   free_form_reports: boolean;

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getEnvVariable } from '@/utils';
+import { getEnvVariable } from '@/utils/env';
 const API_BASE_URL = getEnvVariable('API_BASE_URL');
 
 export const apiClient = axios.create({
