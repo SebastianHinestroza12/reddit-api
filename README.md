@@ -38,7 +38,7 @@ Create a `.env` file in the root of the project and configure the following envi
   "DB_HOST": localhost,
   "DB_NAME": reddit_db,
   "DB_PASSWORD": "",
-  "API_BASE_URL": "http://localhost:3001"
+  "API_BASE_URL": http://localhost:3001
 }
 
 ```
