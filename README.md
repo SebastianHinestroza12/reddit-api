@@ -71,11 +71,11 @@ npm run dev
 
 Puedes utilizar Postman o tu cliente de API preferido para consumir los endpoints. Los puntos finales disponibles son:
 
-- GET /api/v1/subreddits - Recupera una lista de subreddits.
+- GET http://localhost:3001/api/v1/subreddits - Recupera una lista de subreddits.
 
-- POST /api/v1/subreddits - Crea nuevos subreddits. **Ejecutar primero para poblar la base de datos.**
+- POST http://localhost:3001/api/v1/subreddits - Crea nuevos subreddits. **Ejecutar primero para poblar la base de datos.**
 
-- GET /api/v1/subreddits/{subredditId} - Recupera un subreddit por su ID.
+- GET http://localhost:3001/api/v1/subreddits/{subredditId} - Recupera un subreddit por su ID.
 
 ### 7. Diagrama de Entidades y Relaciones
 
