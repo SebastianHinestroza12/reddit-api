@@ -1,9 +1,11 @@
 # Reddit API
 
 ## Descripción
+
 Reddit API es una API construida con Node.js y Express que permite interactuar con datos de Reddit, almacenándolos en una base de datos MySQL y proporcionando endpoints RESTful conforme a la especificación JSON:API.
 
 ## Requisitos
+
 Antes de empezar, asegúrate de tener instalados los siguientes requisitos:
 
 - **Node.js** (versión 14 o superior)
@@ -14,7 +16,9 @@ Antes de empezar, asegúrate de tener instalados los siguientes requisitos:
 ## Instalación
 
 ### 1. Clonar el Repositorio
+
 Clona el proyecto desde GitHub:
+
 ```bash
 git clone https://github.com/SebastianHinestroza12/reddit-api.git
 
@@ -83,3 +87,6 @@ El siguiente diagrama muestra las entidades utilizadas en la base de datos y sus
 
 [VISUALIZAR DIAGRAMA](https://drawsql.app/teams/mena-3/diagrams/reddit-db)
 
+## Authors
+
+- [@SebastianHinestroza12](https://github.com/SebastianHinestroza12)
